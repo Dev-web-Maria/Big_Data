@@ -1,0 +1,25 @@
+# Scraping
+scrapy==2.11.0
+beautifulsoup4==4.12.3
+requests==2.31.0
+lxml==5.1.0
+
+# Kafka
+kafka-python==2.0.2
+
+# MinIO
+minio==7.2.7
+
+# Data processing
+pandas==2.1.4
+pyarrow==14.0.2
+
+# Database
+pymysql==1.1.0
+sqlalchemy==2.0.25
+
+# NLP
+langdetect==1.0.9
+
+# Utilitaires
+python-dotenv==1.0.0

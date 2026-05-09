@@ -1,0 +1,32 @@
+# Environnement Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+
+# Anaconda / venv
+.conda/
+venv/
+env/
+
+# Docker volumes
+docker/minio_data/
+docker/airflow_data/
+
+# Données locales
+data_lake/
+*.parquet
+*.json
+
+# Logs
+logs/
+*.log
+airflow/logs/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
