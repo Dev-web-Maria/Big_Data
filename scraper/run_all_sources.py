@@ -41,9 +41,9 @@ def run_all():
     writer  = MinIOWriter()
     summary = []
 
-    print("\n" + "🗞️  " * 20)
+    print("\n" + "*  " * 20)
     print("   SCRAPING TOUTES SOURCES → BRONZE")
-    print("🗞️  " * 20 + "\n")
+    print("*  " * 20 + "\n")
 
     # ── Sources standard ──────────────────────────────────────────
     for src in SOURCES:
@@ -59,13 +59,13 @@ def run_all():
                     "source":  name,
                     "count":   len(articles),
                     "key":     key,
-                    "status":  "✅"
+                    "status":  "done"
                 })
             else:
-                summary.append({"source": name, "count": 0, "status": "⚠️  0 articles"})
+                summary.append({"source": name, "count": 0, "status": "  0 articles"})
         except Exception as e:
-            print(f"  ✗ Erreur : {e}")
-            summary.append({"source": name, "count": 0, "status": f"❌ {e}"})
+            print(f"   Erreur : {e}")
+            summary.append({"source": name, "count": 0, "status": f" {e}"})
 
     # ── Hespress ──────────────────────────────────────────────────
     if ENABLE_HESPRESS:
@@ -77,12 +77,12 @@ def run_all():
             if articles:
                 key = writer.write_bronze(articles, source="hespress")
                 summary.append({"source": "hespress", "count": len(articles),
-                                 "key": key, "status": "✅"})
+                                 "key": key, "status": "done"})
             else:
-                summary.append({"source": "hespress", "count": 0, "status": "⚠️  0 articles"})
+                summary.append({"source": "hespress", "count": 0, "status": "  0 articles"})
         except Exception as e:
             print(f"  ✗ Erreur Hespress : {e}")
-            summary.append({"source": "hespress", "count": 0, "status": f"❌ {e}"})
+            summary.append({"source": "hespress", "count": 0, "status": f" {e}"})
 
     # ── Résumé final ──────────────────────────────────────────────
     print("\n\n" + "=" * 55)
@@ -98,7 +98,7 @@ def run_all():
     print("=" * 55)
 
     # ── Listing des fichiers dans MinIO ───────────────────────────
-    print("\n📂 Fichiers dans MinIO /bronze :\n")
+    print("\n Fichiers dans MinIO /bronze :\n")
     all_files = writer.list_bronze_files()
     for f in all_files:
         size_kb = round(f["size"] / 1024, 1)

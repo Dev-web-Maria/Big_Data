@@ -1,4 +1,3 @@
-# tests/test_silver.py
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
@@ -27,13 +26,13 @@ def run():
     )
 
     sources = ["bbc", "cnn", "aljazeera", "hespress", "akhbarona", "reuters"]
-    print("\n🥈 PIPELINE BRONZE → SILVER\n")
+    print("\n PIPELINE BRONZE → SILVER\n")
     results = {}
 
     for source in sources:
         dates = get_available_dates(minio, source)
         if not dates:
-            print(f"[SILVER] ⚠️  Aucune donnée Bronze pour {source}")
+            print(f"[SILVER]  Aucune donnée Bronze pour {source}")
             results[source] = 0
             continue
 
@@ -47,7 +46,7 @@ def run():
     print("  RÉSUMÉ SILVER")
     print(f"{'='*55}")
     for source, count in results.items():
-        status = "✅" if count > 0 else "⚠️ "
+        status = "OK" if count > 0 else "NOT OK "
         print(f"  {status}  {source:<12} → {count:>3} articles propres")
     print(f"{'='*55}")
     print(f"  TOTAL : {sum(results.values())} articles dans Silver")

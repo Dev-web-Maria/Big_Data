@@ -25,10 +25,10 @@ class ArticleProducer:
         try:
             future   = self.producer.send(self.topic, key=source, value=article)
             metadata = future.get(timeout=10)  # attend confirmation
-            print(f"[PRODUCER] ✓ partition={metadata.partition} | offset={metadata.offset} | {article['titre'][:50]}")
+            print(f"[PRODUCER]  partition={metadata.partition} | offset={metadata.offset} | {article['titre'][:50]}")
             return True
         except Exception as e:
-            print(f"[PRODUCER] ✗ Erreur : {e}")
+            print(f"[PRODUCER]  Erreur : {e}")
             return False
 
     def publish_batch(self, articles: list, delay: float = 0.1):

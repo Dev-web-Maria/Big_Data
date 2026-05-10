@@ -1,4 +1,3 @@
-# scraper/spiders/akhbarona_scraper.py
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
@@ -26,7 +25,7 @@ class AkhbaronaScraper:
             resp = requests.get(self.BASE_URL, headers=HEADERS, timeout=15)
             resp.raise_for_status()
         except Exception as e:
-            print(f"[AKHBARONA] ✗ Page principale inaccessible : {e}")
+            print(f"[AKHBARONA]  Page principale inaccessible : {e}")
             return articles
 
         soup = BeautifulSoup(resp.text, "lxml")
@@ -47,7 +46,7 @@ class AkhbaronaScraper:
             filename = full_url.rstrip("/").split("/")[-1].replace(".html", "")
 
             # Garder uniquement les URLs dont le fichier est purement numérique
-            # Ex: 425405.html ✅  |  index.1.html ❌  |  index.html ❌
+            # Ex: 425405.html ok  |  index.1.html non  |  index.html non
             if filename.isdigit() and full_url not in links:
                 links.append(full_url)
 
@@ -60,10 +59,10 @@ class AkhbaronaScraper:
                 art = self._fetch_article(url)
                 if art:
                     articles.append(art)
-                    print(f"[AKHBARONA] ✓ {art['titre'][:65]}...")
+                    print(f"[AKHBARONA]  {art['titre'][:65]}...")
                 time.sleep(1)
             except Exception as e:
-                print(f"[AKHBARONA] ✗ {url[:50]} : {e}")
+                print(f"[AKHBARONA]  {url[:50]} : {e}")
 
         print(f"[AKHBARONA] Terminé : {len(articles)} articles.")
         return articles
@@ -111,14 +110,14 @@ class AkhbaronaScraper:
                 time_el.get("datetime") or time_el.get_text()
             ).strip()[:10]
         else:
-            # Essayer depuis l'URL : /economy/425405.html → pas de date
+            # Essayer depuis l'URL : /economy/425405.html -> pas de date
             # Essayer une balise meta
             meta_date = soup.find("meta", {"property": "article:published_time"})
             if meta_date and meta_date.get("content"):
                 date_pub = meta_date["content"][:10]
 
         # ── Catégorie depuis l'URL ──
-        # Ex: /economy/425405.html → "economy"
+        # Ex: /economy/425405.html -> "economy"
         url_parts = url.replace("https://www.akhbarona.com/", "").split("/")
         categorie = url_parts[0] if url_parts and not url_parts[0].isdigit() else "general"
 

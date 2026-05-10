@@ -1,4 +1,3 @@
-# etl/silver_to_gold/load_gold.py
 import pandas as pd
 import io, os, sys
 from datetime import datetime, date
@@ -125,7 +124,7 @@ class SilverToGold:
             df   = pd.read_parquet(io.BytesIO(data))
             print(f"[GOLD] {len(df)} articles Silver lus.")
         except Exception as e:
-            print(f"[GOLD] ⚠️  Fichier Silver introuvable : {e}")
+            print(f"[GOLD]  Fichier Silver introuvable : {e}")
             return 0
 
         loaded = 0
@@ -133,7 +132,7 @@ class SilverToGold:
         # Pré-charger source_id dans une transaction dédiée
         with self.engine.begin() as conn:
             source_id = self._get_or_create_source(conn, source)
-        # ↑ commit automatique à la sortie du with
+        # Commit automatique à la sortie du with
 
         # Insérer chaque article dans sa propre transaction
         for _, row in df.iterrows():
@@ -162,10 +161,10 @@ class SilverToGold:
                         "langue":    str(row.get("langue_detectee", "unknown"))[:10],
                         "url":       str(row.get("url", ""))[:1000],
                     })
-                # ↑ commit automatique, rollback si exception
+                # commit automatique, rollback si exception
                 loaded += 1
             except Exception as e:
-                print(f"[GOLD] ⚠️ Article ignoré ({row.get('titre', '?')[:50]}) : {e}")
+                print(f"[GOLD]  Article ignoré ({row.get('titre', '?')[:50]}) : {e}")
 
         print(f"[GOLD] ✓ {loaded}/{len(df)} articles chargés dans MySQL.")
         return loaded

@@ -1,4 +1,3 @@
-# scraper/spiders/bbc_scraper.py
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
@@ -54,10 +53,10 @@ class BBCScraper:
                 article = self._fetch_article(url)
                 if article:
                     articles.append(article)
-                    print(f"[BBC] ✓ {article['titre'][:70]}...")
+                    print(f"[BBC] {article['titre'][:70]}...")
                 time.sleep(1)  # Délai poli entre requêtes
             except Exception as e:
-                print(f"[BBC] ✗ Erreur sur {url} : {e}")
+                print(f"[BBC] Erreur sur {url} : {e}")
 
         print(f"[BBC] Terminé : {len(articles)} articles collectés.")
         return articles
@@ -88,7 +87,7 @@ class BBCScraper:
         else:
             date_pub = datetime.utcnow().date().isoformat()
 
-        # Catégorie depuis l'URL  (ex: /news/world → "world")
+        # Catégorie depuis l'URL  (ex: /news/world -> "world")
         parts = url.replace("https://www.bbc.com/", "").split("/")
         categorie = parts[1] if len(parts) > 1 else "general"
 

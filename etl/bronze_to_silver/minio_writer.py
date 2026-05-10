@@ -1,4 +1,3 @@
-# etl/bronze_to_silver/minio_writer.py
 import json
 import io
 import os
@@ -50,7 +49,7 @@ class MinIOWriter:
             content_type="application/json"
         )
 
-        print(f"[BRONZE] ✓ {len(articles)} articles → s3://bronze/{key}")
+        print(f"[BRONZE]  {len(articles)} articles → s3://bronze/{key}")
         return key
 
     def list_bronze_files(self, source: str = None) -> list:

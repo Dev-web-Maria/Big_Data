@@ -1,4 +1,3 @@
-# tests/test_bronze_pipeline.py
 """
 Test complet : Scraping BBC + Hespress → MinIO Bronze
 """
@@ -86,7 +85,7 @@ if __name__ == "__main__":
     verify_bronze()
 
     print("\n" + "=" * 60)
-    print("✅  SPRINT 1 TERMINÉ — Bronze layer opérationnel !")
+    print("  SPRINT 1 TERMINÉ — Bronze layer opérationnel !")
     print("=" * 60)
     print("\nVérifie visuellement sur : http://localhost:9001")
     print("  Login : minioadmin / minioadmin")

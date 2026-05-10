@@ -17,7 +17,7 @@ def load_silver_data(minio, source: str) -> pd.DataFrame:
                 data = minio.get_object("silver", obj.object_name).read()
                 all_dfs.append(pd.read_parquet(io.BytesIO(data)))
     except Exception as e:
-        print(f"  ⚠️ Erreur lecture Silver {source} : {e}")
+        print(f"   Erreur lecture Silver {source} : {e}")
 
     return pd.concat(all_dfs, ignore_index=True) if all_dfs else pd.DataFrame()
 
@@ -28,13 +28,13 @@ def run():
     checker = DataQualityChecker()
     sources = ["bbc", "cnn", "aljazeera", "hespress", "akhbarona", "reuters"]
 
-    print("\n🔍 AUDIT QUALITÉ — COUCHE SILVER\n")
+    print("\n AUDIT QUALITÉ — COUCHE SILVER\n")
 
     rapports = []
     for source in sources:
         df = load_silver_data(minio, source)
         if df.empty:
-            print(f"  ⚠️  {source} : aucune donnée Silver trouvée")
+            print(f"    {source} : aucune donnée Silver trouvée")
             continue
 
         rapport = checker.run(df, source=source)
@@ -46,8 +46,8 @@ def run():
     print("  RÉSUMÉ GLOBAL")
     print(f"{'='*60}")
     for r in rapports:
-        icon = "✅" if r["all_passed"] else "❌"
-        print(f"  {icon}  {r['source']:<12} → Score: {r['score']}% "
+        statut = "OK" if r["all_passed"] else "NOT OK"
+        print(f"  {statut}  {r['source']:<12} → Score: {r['score']}% "
               f"| {r['total']} articles")
 
     total_articles = sum(r["total"] for r in rapports)

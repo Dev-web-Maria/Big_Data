@@ -1,4 +1,3 @@
-# scraper/spiders/hespress_spider.py
 import scrapy
 import sys, os
 from datetime import datetime
@@ -12,7 +11,7 @@ class HespressSpider(scrapy.Spider):
     allowed_domains = ["hespress.com", "www.hespress.com"]
     start_urls = ["https://hespress.com/"]
 
-    articles = []  # Résultats accessibles après crawl
+    articles = [] 
 
     custom_settings = {
         "DOWNLOAD_DELAY": 2,

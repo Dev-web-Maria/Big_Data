@@ -181,11 +181,11 @@ class DataQualityChecker:
         for section_name, checks in sections:
             print(f"\n  [{section_name}]")
             for check_name, result in checks.items():
-                icon  = "✅" if result.get("passed") else "❌"
+                statut  = "OK" if result.get("passed") else "NOT OK"
                 count = result.get("count", result.get("null_count", 0))
                 pct   = result.get("pct",   result.get("null_pct",   0))
-                print(f"    {icon} {check_name:<25} : {count} cas ({pct}%)")
+                print(f"    {statut} {check_name:<25} : {count} cas ({pct}%)")
 
-        status = "✅ QUALITÉ OK" if rapport["all_passed"] else "❌ QUALITÉ INSUFFISANTE"
+        status = " QUALITÉ OK" if rapport["all_passed"] else " QUALITÉ INSUFFISANTE"
         print(f"\n  → {status}")
         print(f"{'='*60}")

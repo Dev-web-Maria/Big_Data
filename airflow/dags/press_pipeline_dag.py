@@ -1,4 +1,3 @@
-# airflow/dags/press_pipeline_dag.py
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.operators.empty import EmptyOperator
@@ -21,7 +20,7 @@ default_args = {
 dag = DAG(
     dag_id="press_lakehouse_pipeline",
     description="Pipeline complet : Scraping → Bronze → Silver → Gold",
-    schedule_interval="0 * * * *",   # toutes les heures
+    schedule_interval="0 * * * *",  
     start_date=datetime(2026, 1, 1),
     catchup=False,
     default_args=default_args,
@@ -118,7 +117,7 @@ def task_quality_check(**context):
             scores.append(rapport["score"])
 
         except Exception as e:
-            print(f"[QUALITÉ] ⚠️ {source} : {e}")
+            print(f"[QUALITÉ]  {source} : {e}")
 
     if scores:
         avg = round(sum(scores) / len(scores), 1)
@@ -126,7 +125,7 @@ def task_quality_check(**context):
         if avg < 70:
             raise Exception(f"Qualité insuffisante : score moyen {avg}% < 70%")
 
-    print("[QUALITÉ] ✅ Vérification terminée.")
+    print("[QUALITÉ]  Vérification terminée.")
 
 
 # ── Définition des tâches ────────────────────────────────────────

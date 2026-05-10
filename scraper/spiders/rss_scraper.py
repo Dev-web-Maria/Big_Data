@@ -20,7 +20,7 @@ RSS_SOURCES = {
     "reuters": {
         "feeds": [
             # Nouveaux endpoints Reuters + AP News comme fallback
-            "https://feeds.bbci.co.uk/news/world/rss.xml",        # fallback
+            "https://feeds.bbci.co.uk/news/world/rss.xml",      
             "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
             "https://feeds.npr.org/1001/rss.xml",
         ],

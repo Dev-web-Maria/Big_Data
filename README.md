@@ -30,7 +30,7 @@ Le pipeline de donnees suit le flux suivant :
 | Traitement         | Pandas, PyArrow          | Transformation ETL            |
 | Data Warehouse     | MySQL                    | Modele en etoile              |
 | Orchestration      | Apache Airflow           | Planification pipeline        |
-| Conteneurisation   | Docker, Docker Compose   | Deploiement unifie            |
+| Conteneurisation   | Docker, Docker Compose   | Deploiement unifié            |
 | Visualisation      | Power BI                 | Dashboards analytiques        |
 
 ## Sources de donnees
@@ -94,7 +94,7 @@ Tables : fact_articles, dim_date, dim_source, dim_categorie.
 
 ### Installation
 
-    git clone https://github.com/USERNAME/press_lakehouse.git
+    git clone https://github.com/Dev-web-Maria/Big_Data.git
     cd press_lakehouse
     conda create -n press_lakehouse python=3.11 -y
     conda activate press_lakehouse
@@ -132,8 +132,6 @@ Tables : fact_articles, dim_date, dim_source, dim_categorie.
 
 ## Qualite des donnees
 
-Score moyen obtenu : 94.5% sur 154 articles analyses.
-
 Dimensions evaluees :
 - Completude : champs obligatoires non nuls
 - Validite : format URLs, dates, longueur contenu
@@ -154,8 +152,10 @@ Copier .env.example vers .env et adapter les valeurs :
     MINIO_ROOT_USER=minioadmin
     MINIO_ROOT_PASSWORD=minioadmin
     MINIO_ENDPOINT=localhost:9000
+    
     KAFKA_BOOTSTRAP_SERVERS=localhost:9092
     KAFKA_TOPIC_RAW=raw-articles
+    
     MYSQL_ROOT_PASSWORD=root123
     MYSQL_DATABASE=press_warehouse
     MYSQL_USER=press_user
@@ -164,7 +164,7 @@ Copier .env.example vers .env et adapter les valeurs :
 ## Guide de demarrage 
 
 ### Prerequis
-- Docker Desktop lance et icone verte dans la barre des taches
+- Docker Desktop lancé
 - Environnement conda active : conda activate press_lakehouse
 
 ### Etape 1 — Lancer toute l'infrastructure
@@ -172,8 +172,6 @@ Copier .env.example vers .env et adapter les valeurs :
 cd docker
 docker-compose up -d
 
-Attendre 4-5 minutes que tous les services demarrent
-(Airflow installe ses dependances au premier demarrage)
 
 ### Etape 2 — Verifier que tout tourne
 
@@ -231,7 +229,3 @@ Airflow : http://localhost:8082
 Power BI : ouvrir dashboard/press_lakehouse_dashboard.pbix
   Cliquer sur Actualiser pour charger les nouvelles donnees
 
-### Relancer apres arret du PC
-
-docker-compose up -d
-(les etapes "premier lancement uniquement" ne sont plus necessaires)

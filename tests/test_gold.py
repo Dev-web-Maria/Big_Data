@@ -1,4 +1,3 @@
-# tests/test_gold.py
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
@@ -22,7 +21,7 @@ def run():
                    secret_key="minioadmin", secure=False)
 
     sources = ["bbc", "cnn", "aljazeera", "hespress", "akhbarona", "reuters"]
-    print("\n🥇 PIPELINE SILVER → GOLD (MySQL)\n")
+    print("\n PIPELINE SILVER → GOLD (MySQL)\n")
     results = {}
 
     for source in sources:
@@ -37,13 +36,13 @@ def run():
     print("  RÉSUMÉ GOLD — MySQL Data Warehouse")
     print(f"{'='*55}")
     for source, count in results.items():
-        status = "✅" if count > 0 else "⚠️ "
+        status = "OK" if count > 0 else "NOT OK "
         print(f"  {status}  {source:<12} → {count:>3} articles")
     print(f"{'='*55}")
     print(f"  TOTAL : {sum(results.values())} articles dans MySQL")
 
     # Vérification SQL
-    print("\n📊 Vérification dans MySQL :")
+    print("\n Vérification dans MySQL :")
     from sqlalchemy import create_engine, text
     engine = create_engine(
         "mysql+pymysql://press_user:press_pass@localhost:3306/press_warehouse?charset=utf8mb4"

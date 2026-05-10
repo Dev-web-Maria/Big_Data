@@ -1,0 +1,94 @@
+services:
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    restart: always
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio_storage    
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+    networks:
+      - tp-kafka_default
+    restart: always
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_dw        
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: press_warehouse
+      MYSQL_USER: press_user
+      MYSQL_PASSWORD: press_pass
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - tp-kafka_default
+    restart: always
+
+  kafka:
+    image: confluentinc/cp-kafka:7.4.0
+    container_name: kafka_broker
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    restart: always
+
+  airflow:
+    image: apache/airflow:2.8.1
+    container_name: airflow
+    ports:
+      - "8082:8080"
+    environment:
+      AIRFLOW__CORE__EXECUTOR: SequentialExecutor
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__WEBSERVER__SECRET_KEY: "press_lakehouse_secret"
+      _AIRFLOW_WWW_USER_CREATE: "true"
+      _AIRFLOW_WWW_USER_USERNAME: "admin"
+      _AIRFLOW_WWW_USER_PASSWORD: "admin123"
+      _PIP_ADDITIONAL_REQUIREMENTS: >-
+        langdetect beautifulsoup4 requests scrapy lxml
+        minio pandas pyarrow pymysql sqlalchemy
+        kafka-python python-dotenv
+    volumes:
+      - ../airflow/dags:/opt/airflow/dags
+      - ../scraper:/opt/airflow/dags/scraper
+      - ../etl:/opt/airflow/dags/etl
+      - ../tests:/opt/airflow/dags/tests
+    networks:
+      - tp-kafka_default
+    command: standalone
+    restart: on-failure
+
+networks:
+  tp-kafka_default:
+    external: true
+
+volumes:
+  minio_data:
+  mysql_data:
+  airflow_data:
+  airflow_logs:

@@ -59,7 +59,7 @@ with engine.connect() as conn:
             table = [l for l in stmt.split("\n") if "CREATE TABLE" in l]
             if table:
                 name = table[0].split("IF NOT EXISTS")[-1].strip().split("(")[0].strip()
-                print(f"✅ Table créée : {name}")
+                print(f" Table créée : {name}")
     conn.commit()
 
 print("\nSchéma MySQL prêt !")
