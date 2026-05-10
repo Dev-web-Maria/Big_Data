@@ -36,14 +36,28 @@ class SilverToGold:
     """
 
     def __init__(self):
+        load_dotenv()
+        
         self.minio = Minio(
-            "172.18.0.2:9000",    
-            access_key="minioadmin",
-            secret_key="minioadmin",
-            secure=False
+            os.getenv("MINIO_ENDPOINT", "localhost:9000"),
+            access_key=os.getenv("MINIO_ROOT_USER", "minioadmin"),
+            secret_key=os.getenv("MINIO_ROOT_PASSWORD", "minioadmin"),
+            secure=False,
         )
-        db_url = "mysql+pymysql://press_user:press_pass@172.17.0.2:3306/press_warehouse?charset=utf8mb4"
-        self.engine = create_engine(db_url)
+        
+        db_url = (
+            f"mysql+pymysql://{os.getenv('MYSQL_USER','press_user')}:"
+            f"{os.getenv('MYSQL_PASSWORD','press_pass')}@"
+            f"{os.getenv('MYSQL_HOST','localhost')}:3306/"
+            f"{os.getenv('MYSQL_DATABASE','press_warehouse')}?charset=utf8mb4"
+        )
+        
+        try:
+            self.engine = create_engine(db_url)
+            print(f"[GOLD] Connexion MySQL OK")
+        except Exception as e:
+            print(f"[GOLD] Erreur connexion MySQL : {e}")
+            raise
 
     # ── Dimensions ──────────────────────────────────────────────
 

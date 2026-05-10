@@ -20,7 +20,7 @@ class BronzeToSilver:
 
     def __init__(self):
         self.minio = Minio(
-            "172.18.0.2:9000",
+            os.getenv("MINIO_ENDPOINT", "localhost:9000"),
             access_key=os.getenv("MINIO_ROOT_USER", "minioadmin"),
             secret_key=os.getenv("MINIO_ROOT_PASSWORD", "minioadmin"),
             secure=False,
